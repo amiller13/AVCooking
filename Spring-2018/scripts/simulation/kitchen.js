@@ -31,11 +31,74 @@ function insertImg( imgSrc, divID, width, height ){
     */
 
 
-    document.write('<img id="x" src="' + imgSrc + '" style="margin:0px auto;display:block" usemap="#workmap" width="' + width + '" height="' + height + '"> <map name="workmap"> ' + mapShape1 + mapShape2 + mapShape3 + mapShape4 + mapShape5 + '</map>');
-    document.getElementById( divID );
+  document.write('<img id="x" src="' + imgSrc + '" style="margin:0px auto; display:block;" usemap="#workmap" width="' + width + '" height="' + height + '"> <map name="workmap"> ' + mapShape1 + mapShape2 + mapShape3 + mapShape4 + mapShape5 + '</map>');
+  document.getElementById( divID );
 }
 
+function foodIsReady(){
+  document.getElementById("cooking").src = COOKING_PATH + "breakfast.png";
+  document.getElementById("instructions").innerHTML = "Breakfast is ready!";
+  document.getElementById("wrong").innerHTML = "Code Word: monkey"
+}
+function lookingInTheFridge(){
+  document.getElementById("cooking").src = COOKING_PATH + "1egg.png";
+  document.getElementById("instructions").innerHTML = "Now turn on the stove and the rangehood to cook your eggs"
+}
 
+function waitingOnEggs(){
+  document.getElementById("cooking").src = COOKING_PATH + "cookingegg.png";
+  document.getElementById("instructions").innerHTML = "While your eggs cook, click the toaster to make some toast";
+}
+var frdOn = false;
+var tstOn = false;
+var ovnOn = false;
+var hdOn = false;
+var ltOn = false;
+var meal = true;
+
+function wrongAction(n){
+  if(meal){
+  document.getElementById("wrong").innerHTML = "Click that appliance again to turn it off. You don't need it yet.";
+  if (n == 0){
+    if(frdOn){
+      clearWrong();
+      frdOn = false;}
+    else{
+    frdOn = true;}
+  }
+  else if (n == 1){
+    if(ltOn){
+      clearWrong();
+      ltOn = false;}
+    else{
+      ltOn = true;}
+    }
+  else if (n == 2){
+    if(hdOn){
+      clearWrong();
+      hdOn = false;}
+    else{
+      hdOn = true;}
+    }
+  else if (n == 3){
+    if(ovnOn){
+      clearWrong();
+      ovnOn = false;}
+    else{
+      ovnOn = true;}
+    }
+  else {
+    if(tstOn){
+      clearWrong();
+      tstOn = false;}
+    else{
+      tstOn = true;}
+    }
+}
+}
+function clearWrong(){
+  document.getElementById("wrong").innerHTML = "";
+}
 function changePic( num ){
     var filePath1 = KITCHEN_IMAGES_PATH;
     var srcImg = document.getElementById( "x" ).src;
@@ -44,6 +107,7 @@ function changePic( num ){
     // Fridge pressed
     if ( num == 0 && srcImg == ( filePath1 + "kitchen_2_all_off.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_on.jpg";
+        wrongAction(num);
 	kitchen.switchState(sim_appliances[0]);
     } else if ( num == 0 && srcImg == ( filePath1 + "kitchen_2_all_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_light_hood_oven_toaster_on.jpg";
@@ -83,6 +147,7 @@ function changePic( num ){
 	kitchen.switchState(sim_appliances[0]);
     } else if ( num == 0 && srcImg == ( filePath1 + "kitchen_2_fridge_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_all_off.jpg";
+        wrongAction(num);
 	kitchen.switchState(sim_appliances[0]);
     } else if ( num == 0 && srcImg == ( filePath1 + "kitchen_2_fridge_oven_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_oven_on.jpg";
@@ -119,6 +184,8 @@ function changePic( num ){
 	kitchen.switchState(sim_appliances[0]);
     } else if ( num == 0 && srcImg == ( filePath1 + "kitchen_2_light_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_light_on.jpg";
+        document.getElementById("instructions").innerHTML = "Looking in the fridge for eggs..."
+        setTimeout(lookingInTheFridge, 3500);
 	kitchen.switchState(sim_appliances[0]);
     } else if ( num == 0 && srcImg == ( filePath1 + "kitchen_2_light_oven_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_light_oven_on.jpg";
@@ -141,15 +208,16 @@ function changePic( num ){
 
 	// LIGHT PRESSED
 
-    } else if ( num == 1 && srcImg == ( filePath1 + "kitchen_2_all_off.jpg" ) ) {
+    }else if ( num == 1 && srcImg == ( filePath1 + "kitchen_2_all_off.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_light_on.jpg";
+        document.getElementById("instructions").innerHTML = "Now Click the Fridge to get the eggs!";
 	kitchen.switchState(sim_appliances[1]);
     } else if ( num == 1 && srcImg == ( filePath1 + "kitchen_2_all_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_hood_oven_toaster_on.jpg";
 	kitchen.switchState(sim_appliances[1]);
     } else if ( num == 1 && srcImg == ( filePath1 + "kitchen_2_fridge_hood_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_light_hood_on.jpg";
-	kitchen.switchState(sim_appliances[1]);
+  kitchen.switchState(sim_appliances[1]);
     } else if ( num == 1 && srcImg == ( filePath1 + "kitchen_2_fridge_hood_oven_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_light_hood_oven_on.jpg";
 	kitchen.switchState(sim_appliances[1]);
@@ -164,13 +232,13 @@ function changePic( num ){
 	kitchen.switchState(sim_appliances[1]);
     } else if ( num == 1 && srcImg == ( filePath1 + "kitchen_2_fridge_light_hood_oven_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_hood_oven_on.jpg";
-	kitchen.switchState(sim_appliances[1]);
+  kitchen.switchState(sim_appliances[1]);
     } else if ( num == 1 && srcImg == ( filePath1 + "kitchen_2_fridge_light_hood_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_hood_toaster_on.jpg";
 	kitchen.switchState(sim_appliances[1]);
     } else if ( num == 1 && srcImg == ( filePath1 + "kitchen_2_fridge_light_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_on.jpg";
-	kitchen.switchState(sim_appliances[1]);
+  kitchen.switchState(sim_appliances[1]);
     } else if ( num == 1 && srcImg == ( filePath1 + "kitchen_2_fridge_light_oven_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_oven_on.jpg";
 	kitchen.switchState(sim_appliances[1]);
@@ -243,70 +311,95 @@ function changePic( num ){
     } else if ( num == 2 && srcImg == ( filePath1 + "kitchen_2_all_off.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_hood_on.jpg";
 	kitchen.switchState(sim_appliances[2]);
+        wrongAction(num);
 
     } else if ( num == 2 && srcImg == ( filePath1 + "kitchen_2_all_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_light_oven_toaster_on.jpg";
 	kitchen.switchState(sim_appliances[2]);
     } else if ( num == 2 && srcImg == ( filePath1 + "kitchen_2_fridge_hood_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_on.jpg";
+        wrongAction(num);
 	kitchen.switchState(sim_appliances[2]);
     } else if ( num == 2 && srcImg == ( filePath1 + "kitchen_2_fridge_hood_oven_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_oven_on.jpg";
 	kitchen.switchState(sim_appliances[2]);
+      wrongAction(num);
     } else if ( num == 2 && srcImg == ( filePath1 + "kitchen_2_fridge_hood_oven_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_oven_toaster_on.jpg";
+        wrongAction(num);
 	kitchen.switchState(sim_appliances[2]);
     } else if ( num == 2 && srcImg == ( filePath1 + "kitchen_2_fridge_hood_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_toaster_on.jpg";
+        wrongAction(num);
 	kitchen.switchState(sim_appliances[2]);
     } else if ( num == 2 && srcImg == ( filePath1 + "kitchen_2_fridge_light_hood_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_light_on.jpg";
+        wrongAction(num);
 	kitchen.switchState(sim_appliances[2]);
     } else if ( num == 2 && srcImg == ( filePath1 + "kitchen_2_fridge_light_hood_oven_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_light_oven_on.jpg";
+        wrongAction(num);
 	kitchen.switchState(sim_appliances[2]);
     } else if ( num == 2 && srcImg == ( filePath1 + "kitchen_2_fridge_light_hood_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_light_toaster_on.jpg";
+        wrongAction(num);
 	kitchen.switchState(sim_appliances[2]);
     } else if ( num == 2 && srcImg == ( filePath1 + "kitchen_2_fridge_light_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_light_hood_on.jpg";
+        document.getElementById("instructions").innerHTML = "Now turn on the stove so your eggs cook."
+
 	kitchen.switchState(sim_appliances[2]);
     } else if ( num == 2 && srcImg == ( filePath1 + "kitchen_2_fridge_light_oven_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_light_hood_oven_on.jpg";
+        document.getElementById("instructions").innerHTML = "Waiting for the eggs..."
+        setTimeout(waitingOnEggs,4000);
 	kitchen.switchState(sim_appliances[2]);
     } else if ( num == 2 && srcImg == ( filePath1 + "kitchen_2_fridge_light_oven_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_all_on.jpg";
+        wrongAction(num);
 	kitchen.switchState(sim_appliances[2]);
     } else if ( num == 2 && srcImg == ( filePath1 + "kitchen_2_fridge_light_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_light_hood_toaster_on.jpg";
+        wrongAction(num);
 	kitchen.switchState(sim_appliances[2]);
 
     } else if ( num == 2 && srcImg == ( filePath1 + "kitchen_2_fridge_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_hood_on.jpg";
+        wrongAction(num);
 	kitchen.switchState(sim_appliances[2]);
     } else if ( num == 2 && srcImg == ( filePath1 + "kitchen_2_fridge_oven_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_hood_oven_on.jpg";
+        wrongAction(num);
+
 	kitchen.switchState(sim_appliances[2]);
     } else if ( num == 2 && srcImg == ( filePath1 + "kitchen_2_fridge_oven_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_hood_oven_toaster_on.jpg";
+        wrongAction(num);
 	kitchen.switchState(sim_appliances[2]);
     } else if ( num == 2 && srcImg == ( filePath1 + "kitchen_2_fridge_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_hood_toaster_on.jpg";
+        wrongAction(num);
+
 	kitchen.switchState(sim_appliances[2]);
     } else if ( num == 2 && srcImg == ( filePath1 + "kitchen_2_hood_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_all_off.jpg";
+        wrongAction(num);
 	kitchen.switchState(sim_appliances[2]);
     } else if ( num == 2 && srcImg == ( filePath1 + "kitchen_2_hood_oven_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_oven_on.jpg";
+        wrongAction(num);
 	kitchen.switchState(sim_appliances[2]);
     } else if ( num == 2 && srcImg == ( filePath1 + "kitchen_2_hood_oven_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_oven_toaster_on.jpg";
+        wrongAction(num);
 	kitchen.switchState(sim_appliances[2]);
     } else if ( num == 2 && srcImg == ( filePath1 + "kitchen_2_hood_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_toaster_on.jpg";
+        wrongAction(num);
 	kitchen.switchState(sim_appliances[2]);
     } else if ( num == 2 && srcImg == ( filePath1 + "kitchen_2_light_hood_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_light_on.jpg";
+        wrongAction(num);
 	kitchen.switchState(sim_appliances[2]);
     } else if ( num == 2 && srcImg == ( filePath1 + "kitchen_2_light_hood_oven_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_light_oven_on.jpg";
@@ -316,227 +409,301 @@ function changePic( num ){
 	kitchen.switchState(sim_appliances[2]);
     } else if ( num == 2 && srcImg == ( filePath1 + "kitchen_2_light_hood_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_light_toaster_on.jpg";
-	kitchen.switchState(sim_appliances[2]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[2]);
     } else if ( num == 2 && srcImg == ( filePath1 + "kitchen_2_light_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_light_hood_on.jpg";
-	kitchen.switchState(sim_appliances[2]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[2]);
     } else if ( num == 2 && srcImg == ( filePath1 + "kitchen_2_light_oven_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_light_hood_oven_on.jpg";
-	kitchen.switchState(sim_appliances[2]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[2]);
     } else if ( num == 2 && srcImg == ( filePath1 + "kitchen_2_light_oven_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_light_hood_oven_toaster_on.jpg";
-	kitchen.switchState(sim_appliances[2]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[2]);
     } else if ( num == 2 && srcImg == ( filePath1 + "kitchen_2_light_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_light_hood_toaster_on.jpg";
-	kitchen.switchState(sim_appliances[2]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[2]);
     } else if ( num == 2 && srcImg == ( filePath1 + "kitchen_2_oven_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_hood_oven_on.jpg";
-	kitchen.switchState(sim_appliances[2]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[2]);
     } else if ( num == 2 && srcImg == ( filePath1 + "kitchen_2_oven_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_hood_oven_toaster_on.jpg";
-	kitchen.switchState(sim_appliances[2]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[2]);
     } else if ( num == 2 && srcImg == ( filePath1 + "kitchen_2_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_hood_toaster_on.jpg";
-	kitchen.switchState(sim_appliances[2]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[2]);
 
 	// OVEN PRESSED
 
     } else if ( num == 3 && srcImg == ( filePath1 + "kitchen_2_all_off.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_oven_on.jpg";
+        wrongAction(num);
 	kitchen.switchState(sim_appliances[3]);
 
     } else if ( num == 3 && srcImg == ( filePath1 + "kitchen_2_all_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_light_hood_toaster_on.jpg";
+        wrongAction(num);
 	kitchen.switchState(sim_appliances[3]);
     } else if ( num == 3 && srcImg == ( filePath1 + "kitchen_2_fridge_hood_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_hood_oven_on.jpg";
-	kitchen.switchState(sim_appliances[3]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[3]);
     } else if ( num == 3 && srcImg == ( filePath1 + "kitchen_2_fridge_hood_oven_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_hood_on.jpg";
-	kitchen.switchState(sim_appliances[3]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[3]);
     } else if ( num == 3 && srcImg == ( filePath1 + "kitchen_2_fridge_hood_oven_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_hood_toaster_on.jpg";
-	kitchen.switchState(sim_appliances[3]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[3]);
     } else if ( num == 3 && srcImg == ( filePath1 + "kitchen_2_fridge_hood_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_hood_oven_toaster_on.jpg";
-	kitchen.switchState(sim_appliances[3]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[3]);
     } else if ( num == 3 && srcImg == ( filePath1 + "kitchen_2_fridge_light_hood_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_light_hood_oven_on.jpg";
+        document.getElementById("instructions").innerHTML = "Waiting for the eggs..."
+        setTimeout(waitingOnEggs, 4000);
 	kitchen.switchState(sim_appliances[3]);
     } else if ( num == 3 && srcImg == ( filePath1 + "kitchen_2_fridge_light_hood_oven_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_light_hood_on.jpg";
-	kitchen.switchState(sim_appliances[3]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[3]);
     } else if ( num == 3 && srcImg == ( filePath1 + "kitchen_2_fridge_light_hood_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_all_on.jpg";
-	kitchen.switchState(sim_appliances[3]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[3]);
     } else if ( num == 3 && srcImg == ( filePath1 + "kitchen_2_fridge_light_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_light_oven_on.jpg";
+        document.getElementById("instructions").innerHTML = "Now turn on the rangehood to cook your eggs"
 	kitchen.switchState(sim_appliances[3]);
     } else if ( num == 3 && srcImg == ( filePath1 + "kitchen_2_fridge_light_oven_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_light_on.jpg";
-	kitchen.switchState(sim_appliances[3]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[3]);
     } else if ( num == 3 && srcImg == ( filePath1 + "kitchen_2_fridge_light_oven_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_light_toaster_on.jpg";
-	kitchen.switchState(sim_appliances[3]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[3]);
     } else if ( num == 3 && srcImg == ( filePath1 + "kitchen_2_fridge_light_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_light_oven_toaster_on.jpg";
-	kitchen.switchState(sim_appliances[3]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[3]);
     } else if ( num == 3 && srcImg == ( filePath1 + "kitchen_2_fridge_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_oven_on.jpg";
-	kitchen.switchState(sim_appliances[3]);
+        wrongAction(num);
+   kitchen.switchState(sim_appliances[3]);
     } else if ( num == 3 && srcImg == ( filePath1 + "kitchen_2_fridge_oven_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_on.jpg";
-	kitchen.switchState(sim_appliances[3]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[3]);
     } else if ( num == 3 && srcImg == ( filePath1 + "kitchen_2_fridge_oven_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_toaster_on.jpg";
-	kitchen.switchState(sim_appliances[3]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[3]);
     } else if ( num == 3 && srcImg == ( filePath1 + "kitchen_2_fridge_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_oven_toaster_on.jpg";
-	kitchen.switchState(sim_appliances[3]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[3]);
     } else if ( num == 3 && srcImg == ( filePath1 + "kitchen_2_hood_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_hood_oven_on.jpg";
-	kitchen.switchState(sim_appliances[3]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[3]);
     } else if ( num == 3 && srcImg == ( filePath1 + "kitchen_2_hood_oven_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_hood_on.jpg";
-	kitchen.switchState(sim_appliances[3]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[3]);
     } else if ( num == 3 && srcImg == ( filePath1 + "kitchen_2_hood_oven_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_hood_toaster_on.jpg";
+        wrongAction(num);
 	kitchen.switchState(sim_appliances[3]);
     } else if ( num == 3 && srcImg == ( filePath1 + "kitchen_2_hood_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_hood_oven_toaster_on.jpg";
-	kitchen.switchState(sim_appliances[3]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[3]);
     } else if ( num == 3 && srcImg == ( filePath1 + "kitchen_2_light_hood_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_light_hood_oven_on.jpg";
-	kitchen.switchState(sim_appliances[3]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[3]);
     } else if ( num == 3 && srcImg == ( filePath1 + "kitchen_2_light_hood_oven_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_light_hood_on.jpg";
-	kitchen.switchState(sim_appliances[3]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[3]);
     } else if ( num == 3 && srcImg == ( filePath1 + "kitchen_2_light_hood_oven_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_light_hood_toaster_on.jpg";
-	kitchen.switchState(sim_appliances[3]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[3]);
     } else if ( num == 3 && srcImg == ( filePath1 + "kitchen_2_light_hood_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_light_hood_oven_toaster_on.jpg";
-	kitchen.switchState(sim_appliances[3]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[3]);
     } else if ( num == 3 && srcImg == ( filePath1 + "kitchen_2_light_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_light_oven_on.jpg";
-	kitchen.switchState(sim_appliances[3]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[3]);
     } else if ( num == 3 && srcImg == ( filePath1 + "kitchen_2_light_oven_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_light_on.jpg";
-	kitchen.switchState(sim_appliances[3]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[3]);
     } else if ( num == 3 && srcImg == ( filePath1 + "kitchen_2_light_oven_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_light_toaster_on.jpg";
-	kitchen.switchState(sim_appliances[3]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[3]);
     } else if ( num == 3 && srcImg == ( filePath1 + "kitchen_2_light_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_light_oven_toaster_on.jpg";
-	kitchen.switchState(sim_appliances[3]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[3]);
     } else if ( num == 3 && srcImg == ( filePath1 + "kitchen_2_oven_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_all_off.jpg";
-	kitchen.switchState(sim_appliances[3]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[3]);
     } else if ( num == 3 && srcImg == ( filePath1 + "kitchen_2_oven_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_toaster_on.jpg";
-	kitchen.switchState(sim_appliances[3]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[3]);
     } else if ( num == 3 && srcImg == ( filePath1 + "kitchen_2_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_oven_toaster_on.jpg";
-	kitchen.switchState(sim_appliances[3]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[3]);
 	// TOASTER PRESSED
 
     } else if ( num == 4 && srcImg == ( filePath1 + "kitchen_2_all_off.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_toaster_on.jpg";
-	kitchen.switchState(sim_appliances[4]);
-
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[4]);
     } else if ( num == 4 && srcImg == ( filePath1 + "kitchen_2_all_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_light_hood_oven_on.jpg";
-	kitchen.switchState(sim_appliances[4]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[4]);
     } else if ( num == 4 && srcImg == ( filePath1 + "kitchen_2_fridge_hood_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_hood_toaster_on.jpg";
-	kitchen.switchState(sim_appliances[4]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[4]);
     } else if ( num == 4 && srcImg == ( filePath1 + "kitchen_2_fridge_hood_oven_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_hood_oven_toaster_on.jpg";
-	kitchen.switchState(sim_appliances[4]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[4]);
     } else if ( num == 4 && srcImg == ( filePath1 + "kitchen_2_fridge_hood_oven_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_hood_oven_on.jpg";
-	kitchen.switchState(sim_appliances[4]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[4]);
     } else if ( num == 4 && srcImg == ( filePath1 + "kitchen_2_fridge_hood_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_hood_on.jpg";
-	kitchen.switchState(sim_appliances[4]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[4]);
     } else if ( num == 4 && srcImg == ( filePath1 + "kitchen_2_fridge_light_hood_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_light_hood_toaster_on.jpg";
-	kitchen.switchState(sim_appliances[4]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[4]);
     } else if ( num == 4 && srcImg == ( filePath1 + "kitchen_2_fridge_light_hood_oven_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_all_on.jpg";
+        document.getElementById("instructions").innerHTML = "Toasting..."
+        setTimeout(foodIsReady,4500);
+        meal = false;
 	kitchen.switchState(sim_appliances[4]);
     } else if ( num == 4 && srcImg == ( filePath1 + "kitchen_2_fridge_light_hood_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_light_hood_on.jpg";
-	kitchen.switchState(sim_appliances[4]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[4]);
     } else if ( num == 4 && srcImg == ( filePath1 + "kitchen_2_fridge_light_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_light_toaster_on.jpg";
-	kitchen.switchState(sim_appliances[4]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[4]);
     } else if ( num == 4 && srcImg == ( filePath1 + "kitchen_2_fridge_light_oven_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_light_oven_toaster_on.jpg";
-	kitchen.switchState(sim_appliances[4]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[4]);
     } else if ( num == 4 && srcImg == ( filePath1 + "kitchen_2_fridge_light_oven_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_light_oven_on.jpg";
-	kitchen.switchState(sim_appliances[4]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[4]);
     } else if ( num == 4 && srcImg == ( filePath1 + "kitchen_2_fridge_light_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_light_on.jpg";
-	kitchen.switchState(sim_appliances[4]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[4]);
     } else if ( num == 4 && srcImg == ( filePath1 + "kitchen_2_fridge_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_toaster_on.jpg";
-	kitchen.switchState(sim_appliances[4]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[4]);
     } else if ( num == 4 && srcImg == ( filePath1 + "kitchen_2_fridge_oven_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_oven_toaster_on.jpg";
-	kitchen.switchState(sim_appliances[4]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[4]);
     } else if ( num == 4 && srcImg == ( filePath1 + "kitchen_2_fridge_oven_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_oven_on.jpg";
-	kitchen.switchState(sim_appliances[4]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[4]);
     } else if ( num == 4 && srcImg == ( filePath1 + "kitchen_2_fridge_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_fridge_on.jpg";
-	kitchen.switchState(sim_appliances[4]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[4]);
     } else if ( num == 4 && srcImg == ( filePath1 + "kitchen_2_hood_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_hood_toaster_on.jpg";
-	kitchen.switchState(sim_appliances[4]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[4]);
     } else if ( num == 4 && srcImg == ( filePath1 + "kitchen_2_hood_oven_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_hood_oven_toaster_on.jpg";
-	kitchen.switchState(sim_appliances[4]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[4]);
     } else if ( num == 4 && srcImg == ( filePath1 + "kitchen_2_hood_oven_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_hood_oven_on.jpg";
-	kitchen.switchState(sim_appliances[4]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[4]);
     } else if ( num == 4 && srcImg == ( filePath1 + "kitchen_2_hood_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_hood_on.jpg";
-	kitchen.switchState(sim_appliances[4]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[4]);
     } else if ( num == 4 && srcImg == ( filePath1 + "kitchen_2_light_hood_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_light_hood_toaster_on.jpg";
-	kitchen.switchState(sim_appliances[4]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[4]);
     } else if ( num == 4 && srcImg == ( filePath1 + "kitchen_2_light_hood_oven_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_light_hood_oven_toaster_on.jpg";
-	kitchen.switchState(sim_appliances[4]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[4]);
     } else if ( num == 4 && srcImg == ( filePath1 + "kitchen_2_light_hood_oven_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_light_hood_oven_on.jpg";
-	kitchen.switchState(sim_appliances[4]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[4]);
     } else if ( num == 4 && srcImg == ( filePath1 + "kitchen_2_light_hood_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_light_hood_on.jpg";
-	kitchen.switchState(sim_appliances[4]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[4]);
     } else if ( num == 4 && srcImg == ( filePath1 + "kitchen_2_light_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_light_toaster_on.jpg";
-	kitchen.switchState(sim_appliances[4]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[4]);
     } else if ( num == 4 && srcImg == ( filePath1 + "kitchen_2_light_oven_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_light_oven_toaster_on.jpg";
-	kitchen.switchState(sim_appliances[4]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[4]);
     } else if ( num == 4 && srcImg == ( filePath1 + "kitchen_2_light_oven_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_light_oven_on.jpg";
-	kitchen.switchState(sim_appliances[4]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[4]);
     } else if ( num == 4 && srcImg == ( filePath1 + "kitchen_2_light_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_light_on.jpg";
-	kitchen.switchState(sim_appliances[4]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[4]);
     } else if ( num == 4 && srcImg == ( filePath1 + "kitchen_2_oven_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_oven_toaster_on.jpg";
-	kitchen.switchState(sim_appliances[4]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[4]);
     } else if ( num == 4 && srcImg == ( filePath1 + "kitchen_2_oven_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_oven_on.jpg";
-	kitchen.switchState(sim_appliances[4]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[4]);
     } else if ( num == 4 && srcImg == ( filePath1 + "kitchen_2_toaster_on.jpg" ) ) {
         document.getElementById("x").src = filePath2 + "kitchen_2_all_off.jpg";
-	kitchen.switchState(sim_appliances[4]);
+        wrongAction(num);
+  kitchen.switchState(sim_appliances[4]);
     } else {
 	console.log( "Error" + srcImg + "   " + filePath1);
     }
