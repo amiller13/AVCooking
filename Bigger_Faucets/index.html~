@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Ambient Visualizations</title>
+    <style>
+    body {
+    background-color: rgb(180,180,180);
+    }
+
+    canvas{
+      border-style: solid;
+      border-width:thick;
+      border-color: #000000;
+      background-color: #FFFFFF;
+      padding-left: 0;
+      padding-right: 0;
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+      width: 10x00px;
+      }
+    </style>
+
+  </head>
+  <body>
+    <canvas id="canvas" width="1000" height="300" style="background-color:white"></canvas>
+    <script src="paths.js" type="text/javascript"></script>
+    <!--script src="../../scripts/circles/circles.js" type="text/javascript"></script>
+    <script src="../../scripts/all/main.js" type="text/javascript"></script-->
+    
+    <script src="app_data.js" type="text/javascript"></script>
+    <script src="zilkha.js" type="text/javascript"></script>
+    
+    <script src="kitchen_zilkha.js" type="text/javascript"></script>
+    <script>insertImg("/~20gem3/Water_Visualization/labeled-kitchen/kitchen_2_all_off.jpg","620", "408","id" ) </script>
+    
+    <!--script> console.log(sim_appliances); </script-->
+
+    <script src="p5.min.js"></script>
+    <script src="water_visualization.js" type="text/javascript"></script>
+    
+    <!--script> console.log(sim_appliances); </script-->
+  
+  </body>
+
+
+</html> 
